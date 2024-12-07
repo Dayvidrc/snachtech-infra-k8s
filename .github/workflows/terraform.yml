@@ -34,13 +34,13 @@ jobs:
         terraform_version: 1.5.7
 
     # 4. Criar o Bucket S3 para o Backend
-    - name: Create Backend Bucket
+    - name: Create S3 Backend Bucket
       run: |
         terraform init
         terraform apply -target=aws_s3_bucket.backend -auto-approve
 
     # 5. Reconfigurar o Backend do Terraform
-    - name: Reinitialize Terraform Backend
+    - name: Reconfigure Backend
       run: terraform init -reconfigure
 
     # 6. Validar o Terraform
