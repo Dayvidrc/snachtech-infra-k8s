@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "backend" {
-  bucket = "bucket-terraform-backend"
+  bucket = "snack-tech-backend-tf"
   acl    = "private"
 }
 
