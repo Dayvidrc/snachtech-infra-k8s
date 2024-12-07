@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket = "snack-tech-backend-tf"
+    bucket = "snacktech-backend-tfstate-new"
     key    = "eks-backend/terraform.tfstate"
     region = "us-east-1"
   }
