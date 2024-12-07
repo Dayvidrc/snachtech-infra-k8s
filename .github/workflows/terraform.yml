@@ -31,25 +31,31 @@ jobs:
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
       with:
-        terraform_version: 1.5.7 # Ajuste para a versão do Terraform utilizada
+        terraform_version: 1.5.7
 
-    # 4. Inicializar o Terraform
-    - name: Terraform Init
-      run: terraform init
+    # 4. Criar o Bucket S3 para o Backend
+    - name: Create Backend Bucket
+      run: |
+        terraform init
+        terraform apply -target=aws_s3_bucket.backend -auto-approve
 
-    # 5. Validar o Terraform
+    # 5. Reconfigurar o Backend do Terraform
+    - name: Reinitialize Terraform Backend
+      run: terraform init -reconfigure
+
+    # 6. Validar o Terraform
     - name: Terraform Validate
       run: terraform validate
 
-    # 6. Gerar o plano do Terraform
+    # 7. Gerar o plano do Terraform
     - name: Terraform Plan
       run: terraform plan -out=tfplan
 
-    # 7. Aplicar o plano do Terraform
+    # 8. Aplicar o plano do Terraform
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
 
-    # 8. Atualizar kubeconfig
+    # 9. Atualizar kubeconfig
     - name: Update kubeconfig
       run: |
         aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
