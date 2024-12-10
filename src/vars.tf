@@ -3,7 +3,7 @@ variable "regionDefault" {
 }
 
 variable "projectName" {
-  default = "snack-tech"
+  default = "snacktech"
 }
 
 variable "vpcCidr" {
@@ -15,7 +15,7 @@ variable "instanceType" {
 }
 
 variable "accountIdVoclabs" {
-  default = "973456712332"
+  default = "NNNNNNNNNN"
 }
 
 variable "policyArn" {

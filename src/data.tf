@@ -17,7 +17,3 @@ data "aws_subnet" "subnet" {
 data "aws_iam_role" "labrole" {
   name = "LabRole"
 }
-
-# data "aws_iam_role" "voclabs" {
-#   name = "voclabs"
-# }

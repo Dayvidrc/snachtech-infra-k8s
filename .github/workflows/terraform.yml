@@ -10,8 +10,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./src
+
     env:
-      AWS_REGION: us-east-1
       CLUSTER_NAME: snack-tech
 
     steps:
@@ -21,11 +24,12 @@ jobs:
 
     # 2. Configurar o AWS CLI
     - name: Configure AWS CLI
-      uses: aws-actions/configure-aws-credentials@v2
+      uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-session-token: ${{ secrets.AWS_SECRET_ACCESS_TOKEN }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     # 3. Configurar o Terraform CLI
     - name: Setup Terraform
@@ -35,7 +39,7 @@ jobs:
 
     # 4. Inicializar o Terraform
     - name: Terraform Init
-      run: terraform init
+      run: terraform init -backend-config="bucket=${{ secrets.BACKEND_BUCKET_NAME }}" -backend-config="key=${{ secrets.BACKEND_BUCKET_KEY }}" -backend-config="region=${{ secrets.AWS_REGION }}"
 
     # 5. Validar o Terraform
     - name: Terraform Validate
@@ -43,13 +47,8 @@ jobs:
 
     # 6. Gerar o plano do Terraform
     - name: Terraform Plan
-      run: terraform plan -out=tfplan
+      run: terraform plan -out=tfplan -var="regionDefault=${{ secrets.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}"
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
       run: terraform apply -auto-approve tfplan
-
-    # 8. Atualizar kubeconfig
-    - name: Update kubeconfig
-      run: |
-        aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
