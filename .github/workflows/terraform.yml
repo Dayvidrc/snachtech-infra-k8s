@@ -47,7 +47,7 @@ jobs:
 
     # 6. Gerar o plano do Terraform
     - name: Terraform Plan
-      run: terraform plan -out=tfplan -var="regionDefault=${{ secrets.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}"
+      run: terraform plan -out=tfplan -var="regionDefault=${{ secrets.AWS_REGION }}" -var="accountIdVoclabs=${{ secrets.AWS_ACCOUNT_ID_VOCLABS }}" -var="projectName=${{ vars.PROJECT_NAME }}" 
 
     # 7. Aplicar o plano do Terraform
     - name: Terraform Apply
