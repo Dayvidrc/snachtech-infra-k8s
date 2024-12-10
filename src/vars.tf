@@ -3,7 +3,7 @@ variable "regionDefault" {
 }
 
 variable "projectName" {
-  default = "snack-tech"
+  default = "snacktech"
 }
 
 variable "vpcCidr" {
