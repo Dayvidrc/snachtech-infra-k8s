@@ -1,5 +1,28 @@
-# snachtech-infra-k8s
-Criação de k8s EKS com terraform
+# Infraestrutura como Código (IaC) com Terraform
+
+Este projeto utiliza o Terraform para criar e gerenciar a infraestrutura de um cluster Kubernetes na AWS. A seguir, está descrita a infraestrutura que é criada pelos arquivos Terraform.
+
+## Recursos Criados
+
+* **Cluster Kubernetes**: um cluster Kubernetes chamado `snack-tech` é criado na região `us-east-1` da AWS.
+* **Security Group**: um security group chamado `SG-snacktech` é criado para controlar o tráfego de rede para o cluster.
+* **ECR**: dois repositórios ECR são criados para armazenar imagens Docker: `ecr-snacktech` e `ecr-snacktech-authorizer`.
+* **VPC**: é usada a subnet padrão já criada na conta do usuário seu CIDR é `172.31.0.0/16`.
+* **Subnets**: várias subnets são agrupadas num pool para acomodar os nós do cluster.
+* **Nós do Cluster**: um grupo de nós chamado `NG-snacktech` é criado com 2 instâncias `t3a.micro` cada. Uma configuração de escalabilidade varia esse número até 5, conforme necessidade.
+
+## Arquivos Terraform
+
+Os seguintes arquivos Terraform são utilizados para criar a infraestrutura:
+
+* [src/backend.tf](src/backend.tf): define o backend do Terraform para armazenar o estado da infraestrutura. A especificação do backend é vazia para exigir que ela seja passada como parametro do comando init.
+* [src/eks-cluster.tf](src/eks-cluster.tf): cria o cluster Kubernetes e define sua configuração.
+* [src/eks-nodeg.tf](src/eks-nodeg.tf): cria o grupo de nós do cluster.
+* [src/sg.tf](src/sg.tf): cria o security group para o cluster.
+* [src/ecr.tf](src/ecr.tf): cria os repositórios ECR.
+* [src/data.tf](src/data.tf): define os dados necessários para criar a infraestrutura.
+* [src/vars.tf](src/vars.tf): define as variáveis utilizadas nos arquivos Terraform.
+
 
 
 ### Tutorial de Implantação do Cluster Kubernetes com Terraform
